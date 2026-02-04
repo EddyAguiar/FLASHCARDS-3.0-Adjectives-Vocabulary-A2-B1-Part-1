@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcards - Adjectives Vocabulary A2/B1</title>
+    <style>
+        :root {
+            --personality-a2: #4285F4;
+            --personality-b1: #EA4335;
+            --descriptive: #34A853;
+            --comparative: #FBBC05;
+            --opposites: #9C27B0;
+            --emotions: #FF6D00;
+            --practice: #00BFA5;
+            --highlight: #AA00FF;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            padding: 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        h1 {
+            color: #2d3748;
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #4a5568;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+        
+        .categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+        
+        .category-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .category-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .personality-a2-btn { background-color: var(--personality-a2); color: white; }
+        .personality-b1-btn { background-color: var(--personality-b1); color: white; }
+        .descriptive-btn { background-color: var(--descriptive); color: white; }
+        .comparative-btn { background-color: var(--comparative); }
+        .opposites-btn { background-color: var(--opposites); color: white; }
+        .emotions-btn { background-color: var(--emotions); color: white; }
+        .practice-btn { background-color: var(--practice); color: white; }
+        
+        .flashcards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .flashcard {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 5px solid;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .flashcard:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .personality-a2 { border-color: var(--personality-a2); }
+        .personality-b1 { border-color: var(--personality-b1); }
+        .descriptive { border-color: var(--descriptive); }
+        .comparative { border-color: var(--comparative); }
+        .opposites { border-color: var(--opposites); }
+        .emotions { border-color: var(--emotions); }
+        .practice { border-color: var(--practice); }
+        
+        .level-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+        
+        .a2-badge { background: var(--personality-a2); color: white; }
+        .b1-badge { background: var(--personality-b1); color: white; }
+        
+        .flashcard-header {
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .flashcard-header .emoji {
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .content-level-1, .content-level-2, .content-level-3 {
+            display: none;
+        }
+        
+        .content-level-1.active, .content-level-2.active, .content-level-3.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .question {
+            color: #4a5568;
+            font-weight: 500;
+            margin-bottom: 15px;
+            background: #f8fafc;
+            padding: 12px;
+            border-radius: 8px;
+        }
+        
+        .answer {
+            background: #ebf8ff;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 3px solid #4299e1;
+        }
+        
+        .explanation {
+            background: #f0fff4;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 3px solid #48bb78;
+        }
+        
+        .examples {
+            background: #fff5f5;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 3px solid #f56565;
+        }
+        
+        .practice-content {
+            background: #f3e5f5;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 3px solid var(--practice);
+        }
+        
+        .adjective {
+            font-weight: 700;
+            color: #2b6cb0;
+            background: #e3f2fd;
+            padding: 2px 6px;
+            border-radius: 4px;
+            display: inline-block;
+            margin: 2px 0;
+        }
+        
+        .check {
+            color: #48bb78;
+            margin-right: 5px;
+        }
+        
+        .cross {
+            color: #f56565;
+            margin-right: 5px;
+        }
+        
+        .example-item {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .example-item:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #718096;
+        }
+        
+        .practice-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            background: #fafafa;
+            border-radius: 6px;
+            border-left: 3px solid var(--practice);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .quiz-options {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .quiz-options li {
+            margin-bottom: 8px;
+            padding: 8px;
+            background: #f8fafc;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .quiz-options li:hover {
+            background: #e2e8f0;
+        }
+        
+        .correct {
+            background: #c6f6d5 !important;
+        }
+        
+        .incorrect {
+            background: #fed7d7 !important;
+        }
+        
+        .practice-question {
+            font-weight: 600;
+            color: var(--practice);
+            margin-bottom: 8px;
+        }
+        
+        .practice-answer {
+            padding: 8px;
+            background: #edf7ff;
+            border-radius: 6px;
+            margin-top: 8px;
+            display: none;
+        }
+        
+        .practice-answer.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        .show-answer {
+            background: var(--practice);
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .tip {
+            background: #fff9c4;
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-size: 0.9rem;
+            border-left: 3px solid #ffd600;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #718096;
+            font-size: 0.9rem;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .audio-btn {
+            background: #34A853;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px 0;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .audio-btn i {
+            font-size: 0.8rem;
+        }
+        
+        .opposite-pair {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 5px 0;
+        }
+        
+        .arrow {
+            color: #718096;
+        }
+    </style>
+</head>
+<body>
+    <h1>📚 Flashcards - Adjectives Vocabulary A2/B1</h1>
+    <div class="subtitle">Essential adjectives from quizzes with audio examples</div>
+    
+    <div class="categories">
+        <button class="category-btn personality-a2-btn" onclick="filterCards('personality-a2')">Personality A2</button>
+        <button class="category-btn personality-b1-btn" onclick="filterCards('personality-b1')">Personality B1</button>
+        <button class="category-btn descriptive-btn" onclick="filterCards('descriptive')">Descriptive</button>
+        <button class="category-btn comparative-btn" onclick="filterCards('comparative')">Comparative/Superlative</button>
+        <button class="category-btn opposites-btn" onclick="filterCards('opposites')">Opposites</button>
+        <button class="category-btn emotions-btn" onclick="filterCards('emotions')">Emotions</button>
+        <button class="category-btn practice-btn" onclick="filterCards('practice')">Practice Exercises</button>
+        <button class="category-btn" onclick="filterCards('all')" style="background: #2d3748; color: white;">Show All</button>
+    </div>
+    
+    <div class="flashcards-container">
+        <!-- Personality Adjectives A2 -->
+        <div class="flashcard personality-a2" onclick="revealContent(this)">
+            <div class="level-badge a2-badge">A2</div>
+            <div class="flashcard-header">
+                <span class="emoji">😊</span> Personality Adjectives (A2)
+            </div>
+            <div class="content-level-1">
+                <div class="question">Essential personality adjectives for level A2</div>
+                <div class="answer">
+                    <span class="adjective">Friendly</span>: amigável<br>
+                    <span class="adjective">Shy</span>: tímido<br>
+                    <span class="adjective">Helpful</span>: prestativo<br>
+                    <span class="adjective">Polite</span>: educado<br>
+                    <span class="adjective">Lazy</span>: preguiçoso<br>
+                    <span class="adjective">Hardworking</span>: trabalhador<br>
+                    <span class="adjective">Funny</span>: engraçado<br>
+                    <span class="adjective">Nice</span>: simpático
+                </div>
+            </div>
+            <div class="content-level-2">
+                <div class="explanation">
+                    <p><span class="check">✅</span> Use to describe people's character</p>
+                    <p><span class="check">✅</span> Come after "to be" verb: "She is friendly"</p>
+                    <p><span class="check">✅</span> Can be positive or negative</p>
+                </div>
+            </div>
+            <div class="content-level-3">
+                <div class="examples">
+                    <p><strong>Examples:</strong></p>
+                    <div class="example-item">
+                        "My teacher is very <strong>friendly</strong>."
+                        <button class="audio-btn" onclick="speakText('My teacher is very friendly.')">
+                            <i class="fas fa-volume-up"></i> Listen
+                        </button>
+                    </div>
+                    <div class="example-item">
+                        "He's too <strong>shy</strong> to speak in public."
+                        <button class="audio-btn" onclick="speakText('He is too shy to speak in public.')">
+                            <i class="fas fa-volume-up"></i> Listen
+                        </button>
+                    </div>
+                    <div class="example-item">
+                        "She's a <strong>hardworking</strong> student."
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Personality Adjectives B1 -->
+        <div class="flashcard personality-b1" onclick="revealContent(this)">
+            <div class="level-badge b1-badge">B1</div>
+            <div class="flashcard-header">
+                <span class="emoji">🚀</span> Personality Adjectives (B1)
+            </div>
+            <div class="content-level-1">
+                <div class="question">Advanced personality adjectives for level B1</div>
+                <div class="answer">
+                    <span class="adjective">Decisive</span>: decisivo<br>
+                    <span class="adjective">Dependable</span>: confiável<br>
+                    <span class="adjective">Determined</span>: determinado<br>
+                    <span class="adjective">Diplomatic</span>: diplomático<br>
+                    <span class="adjective">Discreet</span>: discreto<br>
+                    <span class="adjective">Dynamic</span>: dinâmico<br>
+                    <span class="adjective">Engaging</span>: cativante<br>
+                    <span class="adjective">Easy-going</span>: descontraído
+                </div>
+            </div>
+            <div class="content-level-2">
+                <div class="explanation">
+                    <p><span class="check">✅</span> More specific than A2 adjectives</p>
+                    <p><span class="check">✅</span> Often used in professional contexts</p>
+                    <p><span class="check">✅</span> Show nuanced personality traits</p>
+                </div>
+            </div>
+            <div class="content-level-3">
+                <div class="examples">
+                    <p><strong>Examples:</strong></p>
+                    <div class="example-item">
+                        "A good manager needs to be <strong>decisive</strong>."
+                        <button class="audio-btn" onclick="speakText('A good manager needs to be decisive.')">
+                            <i class="fas fa-volume-up"></i> Listen
+                        </button>
+                    </div>
+                    <div class="example-item">
+                        "He's very <strong>dependable</strong> - always on time."
+                    </div>
+                    <div class="example-item">
+                        "She has a very <strong>engaging</strong> personality."
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Descriptive Adjectives -->
+        <div class="flashcard descriptive" onclick="revealContent(this)">
+            <div class="level-badge a2-badge">A2/B1</div>
+            <div class="flashcard-header">
+                <span class="emoji">🎨</span> Descriptive Adjectives
+            </div>
+            <div class="content-level-1">
+                <div class="question">Adjectives to describe things and people</div>
+                <div class="answer">
+                    <span class="adjective">Beautiful</span>: bonito<br>
+                    <span class="adjective">Big</span>: grande<br>
+                    <span class="adjective">Boring</span>: entediante<br>
+                    <span class="adjective">Charming</span>: encantador<br>
+                    <span class="adjective">Exciting</span>: emocionante<br>
+                    <span class="adjective">Expensive</span>: caro<br>
+                    <span class="adjective">Interesting</span>: interessante<br>
+                    <span class="adjective">Small</span>: pequeno
+                </div>
+            </div>
+            <div class="content-level-2">
+                <div class="explanation">
+                    <p><span class="check">✅</span> Describe appearance, quality, or feeling</p>
+                    <p><span class="check">✅</span> Usually come before nouns: "a beautiful day"</p>
+                    <p><span class="check">✅</span> Can be used with "very" or "really"</p>
+                </div>
+            </div>
+            <div class="content-level-3">
+                <div class="examples">
+                    <p><strong>Examples:</strong></p>
+                    <div class="example-item">
+                        "It was a <strong>beautiful</strong> sunset."
+                        <button class="audio-btn" onclick="speakText('It was a beautiful sunset.')">
+                            <i class="fas fa-volume-up"></i> Listen
+                        </button>
+                    </div>
+                    <div class="example-item">
+                        "The movie was very <strong>exciting</strong>."
+                    </div>
+                    <div class="example-item">
+                        "She has a <strong>charming</strong> smile."
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Comparative and Superlative -->
+        <div class="flashcard comparative" onclick="revealContent(this)">
+            <div class="level-badge a2-badge">A2/B1</div>
+            <div class="flashcard-header">
+                <span class="emoji">📈</span> Comparative & Superlative
+            </div>
+            <div class="content-level-1">
+                <div class="question">Comparing things and people</div>
+                <div class="answer">
+                    <span class="adjective">Good → Better → Best</span><br>
+                    <span class="adjective">Bad → Worse → Worst</span><br>
+                    <span class="adjective">Big → Bigger → Biggest</span><br>
+                    <span class="adjective">Happy → Happier → Happiest</span><br>
+                    <span class="adjective">Tall → Taller → Tallest</span><br>
+                    <span class="adjective">Interesting → More interesting → Most interesting</span>
+                </div>
+            </div>
+            <div class="content-level-2">
+                <div class="explanation">
+                    <p><span class="check">✅</span> <strong>Comparative:</strong> compare 2 things (-er or "more")</p>
+                    <p><span class="check">✅</span> <strong>Superlative:</strong> compare 3+ things (-est or "most")</p>
+                    <p><span class="check">✅</span> Use "than" with comparatives: "taller than"</p>
+                    <p><span class="check">✅</span> Use "the" with superlatives: "the tallest"</p>
+                </div>
+            </div>
+            <div class="content-level-3">
+                <div class="examples">
+                    <p><strong>Examples:</strong></p>
+                    <div class="example-item">
+                        "She is <strong>taller than</strong> her brother."
+                        <button class="audio-btn" onclick="speakText('She is taller than her brother.')">
+                            <i class="fas fa-volume-up"></i> Listen
+                        </button>
+                    </div>
+                    <div class="example-item">
+                        "This is the <strong>best</strong> day of my life."
+                    </div>
+                    <div class="example-item">
+                        "Math is <strong>more difficult than</strong> English."
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Opposite Adjectives -->
+        <div class="flashcard opposites" onclick="revealContent(this)">
+            <div class="level-badge a2-badge">A2</div>
+            <div class="flashcard-header">
+                <span class="emoji">🔄</span> Opposite Adjectives
+            </div>
+            <div class="content-level-1">
+                <div class="question">Common adjective opposites</div>
+                <div class="answer">
+                    <div class="opposite-pair">
+                        <span class="adjective">Big</span> <span class="arrow">↔</span> <span class="adjective">Small</span>
+                    </div>
+                    <div class="opposite-pair">
+                        <span class="adjective">Happy</span> <span class="arrow">↔</span> <span class="adjective">Sad</span>
+                    </div>
+                    <div class="opposite-pair">
+                        <span class="adjective">Hot</span> <span class="arrow">↔</span> <span class="adjective">Cold</span>
+                    </div>
+                    <div class="opposite-pair">
+                        <span class="adjective">Fast</span> <span class="arrow">↔</span> <span class="adjective">Slow</span>
+                    </div>
+                    <div class="opposite-pair">
+                        <span class="adjective">Old</span> <span class="arrow">↔</span> <span class="adjective">New/Young</span>
+                    </div>
+                    <div class="opposite-pair">
+                        <span class="adjective">Easy</span> <span class="arrow">↔</span> <span class="adjective">Difficult</span>
+                    </div>
+                    <div class="opposite-pair">
+                        <span class="adjective">Rich</span> <span class="arrow">↔</span> <span class="adjective">Poor</span>
+                    </div>
+                </div>
+            </div>
+            <div class="content-level-2">
+                <div class="explanation">
+                    <p><span class="check">✅</span> Learn pairs together for better memorization</p>
+                    <p><span class="check">✅</span> Useful for comparisons and descriptions</p>
+                    <p><span class="check">✅</span> Many opposites use "un-" or "in-" prefixes</p>
+                </div>
+            </div>
+            <div class="content-level-3">
+                <div class="examples">
+                    <p><strong>Examples:</strong></p>
+                    <div class="example-item">
+                        "The coffee is too <strong>hot</strong>, I prefer it <strong>cold</strong>."
+                        <button class="audio-btn" onclick="speakText('The coffee is too hot, I prefer it cold.')">
+                            <i class="fas fa-volume-up"></i> Listen
+                        </button>
+                    </div>
+                    <div class="example-item">
+                        "He was <strong>rich</strong> but now he's <strong>poor</strong>."
+                    </div>
+                    <div class="example-item">
+                        "This exercise is <strong>easy</strong>, but that one is <strong>difficult</strong>."
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Emotion Adjectives -->
+        <div class="flashcard emotions" onclick="revealContent(this)">
+            <div class="level-badge a2-badge">A2</div>
+            <div class="flashcard-header">
+                <span class="emoji">😢</span> Emotion Adjectives
+            </div>
+            <div class="content-level-1">
+                <div class="question">Adjectives to express feelings</div>
+                <div class="answer">
+                    <span class="adjective">Happy</span>: feliz<br>
+                    <span class="adjective">Sad</span>: triste<br>
+                    <span class="adjective">Angry</span>: irritado<br>
+                    <span class="adjective">Nervous</span>: nervoso<br>
+                    <span class="adjective">Excited</span>: animado<br>
+                    <span class="adjective">Tired</span>: cansado<br>
+                    <span class="adjective">Surprised</span>: surpreso<br>
+                    <span class="adjective">Worried</span>: preocupado
+                </div>
+            </div>
+            <div class="content-level-2">
+                <div class="explanation">
+                    <p><span class="check">✅</span> Describe how people feel</p>
+                    <p><span class="check">✅</span> Often used with "feel" or "be" verbs</p>
+                    <p><span class="check">✅</span> Can be temporary states</p>
+                </div>
+            </div>
+            <div class="content-level-3">
+                <div class="examples">
+                    <p><strong>Examples:</strong></p>
+                    <div class="example-item">
+                        "I feel very <strong>happy</strong> today."
+                        <button class="audio-btn" onclick="speakText('I feel very happy today.')">
+                            <i class="fas fa-volume-up"></i> Listen
+                        </button>
+                    </div>
+                    <div class="example-item">
+                        "She was <strong>angry</strong> when she lost the game."
+                    </div>
+                    <div class="example-item">
+                        "He's <strong>nervous</strong> about the test."
+                    </div>
+                </div>
+                <div class="tip">
+                    <p><strong>Tip:</strong> Use "very" or "really" to emphasize: "very tired", "really excited"</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Practice - Matching -->
+        <div class="flashcard practice" onclick="revealContent(this)">
+            <div class="level-badge a2-badge">A2</div>
+            <div class="flashcard-header">
+                <span class="emoji">📝</span> Practice - Matching
+            </div>
+            <div class="content-level-1">
+                <div class="question">Match the adjective with its meaning</div>
+                <div class="practice-content">
+                    <div class="practice-item">
+                        <div class="practice-question">1. Someone who doesn't like to work hard</div>
+                        <button class="show-answer" onclick="toggleAnswer(this)">Show Answer</button>
+                        <div class="practice-answer"><span class="check">✅</span> <strong>Lazy</strong></div>
+                    </div>
+                    <div class="practice-item">
+                        <div class="practice-question">2. A person who is intelligent and learns quickly</div>
+                        <button class="show-answer" onclick="toggleAnswer(this)">Show Answer</button>
+                        <div class="practice-answer"><span class="check">✅</span> <strong>Smart</strong></div>
+                    </div>
+                    <div class="practice-item">
+                        <div class="practice-question">3. Feeling before an important test</div>
+                        <button class="show-answer" onclick="toggleAnswer(this)">Show Answer</button>
+                        <div class="practice-answer"><span class="check">✅</span> <strong>Nervous</strong></div>
+                    </div>
+                    <div class="practice-item">
+                        <div class="practice-question">4. The comparative form of "good"</div>
+                        <button class="show-answer" onclick="toggleAnswer(this)">Show Answer</button>
+                        <div class="practice-answer"><span class="check">✅</span> <strong>Better</strong></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Practice - Fill in the Blanks -->
+        <div class="flashcard practice" onclick="revealContent(this)">
+            <div class="level-badge b1-badge">B1</div>
+            <div class="flashcard-header">
+                <span class="emoji">✏️</span> Practice - Complete Sentences
+            </div>
+            <div class="content-level-1">
+                <div class="question">Complete with the correct adjective</div>
+                <div class="practice-content">
+                    <div class="practice-item">
+                        <div class="practice-question">1. "She is very ____ - she always tells the truth." (honest/dishonest)</div>
+                        <button class="show-answer" onclick="toggleAnswer(this)">Show Answer</button>
+                        <div class="practice-answer"><span class="check">✅</span> <strong>Honest</strong> - "She is very honest - she always tells the truth."</div>
+                    </div>
+                    <div class="practice-item">
+                        <div class="practice-question">2. "This book is ____ than the movie." (interesting)</div>
+                        <button class="show-answer" onclick="toggleAnswer(this)">Show Answer</button>
+                        <div class="practice-answer"><span class="check">✅</span> <strong>More interesting</strong> - "This book is more interesting than the movie."</div>
+                    </div>
+                    <div class="practice-item">
+                        <div class="practice-question">3. "He's a ____ worker - he never takes breaks." (hardworking/lazy)</div>
+                        <button class="show-answer" onclick="toggleAnswer(this)">Show Answer</button>
+                        <div class="practice-answer"><span class="check">✅</span> <strong>Hardworking</strong> - "He's a hardworking worker - he never takes breaks."</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Practice - Translation -->
+        <div class="flashcard practice" onclick="revealContent(this)">
+            <div class="level-badge a2-badge">A2</div>
+            <div class="flashcard-header">
+                <span class="emoji">🌐</span> Practice - Translation
+            </div>
+            <div class="content-level-1">
+                <div class="question">Translate using the correct adjective</div>
+                <div class="practice-content">
+                    <div class="practice-item">
+                        <div class="practice-question">1. "Ela é muito simpática e amigável."</div>
+                        <button class="show-answer" onclick="toggleAnswer(this)">Show Answer</button>
+                        <div class="practice-answer"><span class="check">✅</span> "She is very <strong>nice</strong> and <strong>friendly</strong>."</div>
+                    </div>
+                    <div class="practice-item">
+                        <div class="practice-question">2. "Estou cansado porque trabalhei muito."</div>
+                        <button class="show-answer" onclick="toggleAnswer(this)">Show Answer</button>
+                        <div class="practice-answer"><span class="check">✅</span> "I am <strong>tired</strong> because I worked a lot."</div>
+                    </div>
+                    <div class="practice-item">
+                        <div class="practice-question">3. "Este exercício é mais fácil que aquele."</div>
+                        <button class="show-answer" onclick="toggleAnswer(this)">Show Answer</button>
+                        <div class="practice-answer"><span class="check">✅</span> "This exercise is <strong>easier than</strong> that one."</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quiz - Multiple Choice -->
+        <div class="flashcard practice" onclick="revealContent(this)">
+            <div class="level-badge b1-badge">B1</div>
+            <div class="flashcard-header">
+                <span class="emoji">❓</span> Quiz - Multiple Choice
+            </div>
+            <div class="content-level-1">
+                <div class="question">Choose the correct adjective</div>
+                <div class="practice-content">
+                    <div class="practice-item">
+                        <div class="practice-question">1. A person who makes quick decisions is:</div>
+                        <ul class="quiz-options">
+                            <li onclick="checkAnswer(this, 'decisive')">decisive</li>
+                            <li onclick="checkAnswer(this, 'shy')">shy</li>
+                            <li onclick="checkAnswer(this, 'lazy')">lazy</li>
+                        </ul>
+                        <div class="practice-answer" id="answer1"><span class="check">✅</span> <strong>Decisive</strong> - A decisive person makes decisions quickly.</div>
+                    </div>
+                    <div class="practice-item">
+                        <div class="practice-question">2. The superlative form of "good" is:</div>
+                        <ul class="quiz-options">
+                            <li onclick="checkAnswer(this, 'best')">best</li>
+                            <li onclick="checkAnswer(this, 'better')">better</li>
+                            <li onclick="checkAnswer(this, 'gooder')">gooder</li>
+                        </ul>
+                        <div class="practice-answer" id="answer2"><span class="check">✅</span> <strong>Best</strong> - Good → better → best (irregular)</div>
+                    </div>
+                    <div class="practice-item">
+                        <div class="practice-question">3. Someone who doesn't talk much is:</div>
+                        <ul class="quiz-options">
+                            <li onclick="checkAnswer(this, 'quiet')">quiet</li>
+                            <li onclick="checkAnswer(this, 'talkative')">talkative</li>
+                            <li onclick="checkAnswer(this, 'noisy')">noisy</li>
+                        </ul>
+                        <div class="practice-answer" id="answer3"><span class="check">✅</span> <strong>Quiet</strong> - A quiet person doesn't talk much.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tips for Learning Adjectives -->
+        <div class="flashcard descriptive" onclick="revealContent(this)">
+            <div class="level-badge a2-badge">A2/B1</div>
+            <div class="flashcard-header">
+                <span class="emoji">💡</span> Tips for Learning Adjectives
+            </div>
+            <div class="content-level-1">
+                <div class="question">How to learn and use adjectives effectively</div>
+                <div class="tip">
+                    <p><strong>1. Learn in context:</strong> Don't memorize lists - learn adjectives in sentences.</p>
+                    <p><strong>2. Use opposites:</strong> Learn adjective pairs (hot-cold, big-small).</p>
+                    <p><strong>3. Practice with pictures:</strong> Describe pictures using adjectives.</p>
+                    <p><strong>4. Create personal sentences:</strong> Use adjectives to describe your life.</p>
+                    <p><strong>5. Listen and repeat:</strong> Use audio examples to improve pronunciation.</p>
+                </div>
+            </div>
+            <div class="content-level-2">
+                <div class="explanation">
+                    <p><span class="check">✅</span> <strong>A2 Level:</strong> Focus on basic adjectives for daily communication</p>
+                    <p><span class="check">✅</span> <strong>B1 Level:</strong> Add more specific and descriptive adjectives</p>
+                    <p><span class="check">✅</span> Regular practice leads to natural use</p>
+                </div>
+            </div>
+            <div class="content-level-3">
+                <div class="examples">
+                    <p><strong>Daily practice plan:</strong></p>
+                    <div class="example-item">
+                        <strong>Morning:</strong> Describe how you feel (tired, happy, energetic)
+                    </div>
+                    <div class="example-item">
+                        <strong>Afternoon:</strong> Describe people you meet (friendly, busy, helpful)
+                    </div>
+                    <div class="example-item">
+                        <strong>Evening:</strong> Describe your day (interesting, boring, difficult)
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+    <footer>
+      Material created for study — Based on Quizzes 1, 2, 3 • © @EasyEnglishFree
+    </footer>
+
+    <script>
+        // Function to reveal content in flashcards
+        function revealContent(card) {
+            // Find all content levels
+            const level1 = card.querySelector('.content-level-1');
+            const level2 = card.querySelector('.content-level-2');
+            const level3 = card.querySelector('.content-level-3');
+            
+            // Reveal sequence
+            if (!level1.classList.contains('active')) {
+                level1.classList.add('active');
+            } else if (level2 && !level2.classList.contains('active')) {
+                level2.classList.add('active');
+            } else if (level3 && !level3.classList.contains('active')) {
+                level3.classList.add('active');
+            } else {
+                // If all are active, reset
+                if (level1) level1.classList.remove('active');
+                if (level2) level2.classList.remove('active');
+                if (level3) level3.classList.remove('active');
+            }
+        }
+        
+        // Function to show/hide answers in exercises
+        function toggleAnswer(button) {
+            const answer = button.nextElementSibling;
+            answer.classList.toggle('active');
+            
+            // Prevent event propagation to not activate the flashcard's revealContent
+            if (event) event.stopPropagation();
+        }
+        
+        // Function to check answers in quiz
+        function checkAnswer(element, correctAnswer) {
+            const optionText = element.textContent.trim();
+            const isCorrect = optionText === correctAnswer;
+            
+            // Remove previous answer classes
+            const parent = element.parentElement;
+            const options = parent.querySelectorAll('li');
+            options.forEach(opt => {
+                opt.classList.remove('correct', 'incorrect');
+            });
+            
+            // Mark selected answer
+            if (isCorrect) {
+                element.classList.add('correct');
+            } else {
+                element.classList.add('incorrect');
+                
+                // Mark correct answer if available
+                options.forEach(opt => {
+                    if (opt.textContent.trim() === correctAnswer) {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+            
+            // Show explained answer
+            const answerId = parent.parentElement.id ? parent.parentElement.id.replace('options', 'answer') : '';
+            const answerElement = document.getElementById(answerId) || parent.nextElementSibling;
+            if (answerElement && answerElement.classList.contains('practice-answer')) {
+                answerElement.classList.add('active');
+            }
+            
+            if (event) event.stopPropagation();
+        }
+        
+        // Function to filter cards by category
+        function filterCards(category) {
+            const cards = document.querySelectorAll('.flashcard');
+            
+            cards.forEach(card => {
+                if (category === 'all') {
+                    card.classList.remove('hidden');
+                } else if (card.classList.contains(category)) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+        
+        // Function for text-to-speech
+        function speakText(text) {
+            // Prevent propagation to not open the flashcard
+            if (event) event.stopPropagation();
+            
+            // Use Web Speech API if available
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.9;
+                utterance.volume = 1;
+                
+                // Try to set an English voice
+                const voices = speechSynthesis.getVoices();
+                const englishVoice = voices.find(voice => 
+                    voice.lang.includes('en-US') || voice.lang.includes('en-GB')
+                );
+                if (englishVoice) {
+                    utterance.voice = englishVoice;
+                }
+                
+                speechSynthesis.speak(utterance);
+            } else {
+                alert("Your browser doesn't support speech synthesis. Try Chrome, Edge, or Safari.");
+            }
+        }
+        
+        // Initialize some flashcards open
+        document.addEventListener('DOMContentLoaded', function() {
+            // Open first level of first flashcard
+            const firstCard = document.querySelector('.flashcard');
+            if (firstCard) {
+                const firstContent = firstCard.querySelector('.content-level-1');
+                if (firstContent) firstContent.classList.add('active');
+            }
+            
+            // Load voices for speech synthesis
+            if (speechSynthesis.getVoices().length === 0) {
+                speechSynthesis.addEventListener('voiceschanged', function() {
+                    console.log("Voices loaded:", speechSynthesis.getVoices().length);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
